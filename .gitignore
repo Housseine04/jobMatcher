@@ -1,5 +1,7 @@
 useful_commands.txt
 test_client.py
+*.pdf
+
 
 .env
 *.pem
