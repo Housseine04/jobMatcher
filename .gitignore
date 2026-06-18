@@ -1,0 +1,19 @@
+useful_commands.txt
+test_client.py
+
+.env
+*.pem
+
+# Virtual Environments
+venv/
+env/
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
