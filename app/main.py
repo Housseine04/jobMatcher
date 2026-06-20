@@ -19,32 +19,35 @@ app.add_middleware(
 
 @app.post("/api/analyze")
 async def analyze_application(
-    file: UploadFile = File(...),
-    job_description: str = Form(...) # Form data allows mixing text and files
+file: UploadFile = File(...),
+    job_description: str = Form(...),
+    job_requirements: str = Form(...),           # <-- New required field
+    additional_info: str = Form("")              # <-- New optional field
 ):
-    if not file.filename.endswith('.pdf'):
-        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
-        
     try:
-        # 1. Extract Text
+        # Read the file bytes asynchronously
         file_bytes = await file.read()
+        
+        # Extract text from the uploaded PDF
         resume_text = extract_text_from_pdf(file_bytes)
         
-        if not resume_text:
-            raise HTTPException(status_code=400, detail="Could not extract text from the PDF.")
-
-        # 2. Send to AI
-        analysis_result = analyze_resume_and_draft_letter(resume_text, job_description)
+        # Pass all four variables to your AI service
+        analysis_result = analyze_resume_and_draft_letter(
+            resume_text=resume_text,
+            job_description=job_description,
+            job_requirements=job_requirements,   # <-- Passing to AI
+            additional_info=additional_info      # <-- Passing to AI
+        )
         
-        return {
-            "status": "success",
-            "data": analysis_result
-        }
+        return {"status": "success", "data": analysis_result}
+
     except RateLimitError:
         raise HTTPException(
             status_code=429,
             detail="Rate limit reached. Please wait a minute before analyzing another resume."
         )
-
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=f"An unexpected internal server error occurred: {str(e)}"
+        )
