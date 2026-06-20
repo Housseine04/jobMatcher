@@ -2,8 +2,8 @@
 
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.extractor import extract_text_from_pdf
-from app.ai_service import analyze_resume_and_draft_letter
+from backend.extractor import extract_text_from_pdf
+from backend.ai_service import analyze_resume_and_draft_letter
 from groq import RateLimitError
 
 app = FastAPI(title="Resume Analyzer API")
