@@ -1,6 +1,6 @@
 #PyMuPDF/Tesseract logic
 
-import fitz  # PyMuPDF
+import fitz
 import pytesseract
 from PIL import Image
 import io
@@ -15,7 +15,7 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
     # Load the PDF
     pdf_document = fitz.open(stream=file_bytes, filetype="pdf")
     
-    #1 >> Fast-Pass: Try PyMuPDF Digital Extraction
+    #Step 1 >> Fast-Pass: Try PyMuPDF Digital Extraction
     for page_num in range(len(pdf_document)):
         page = pdf_document.load_page(page_num)
         extracted_text += page.get_text()
@@ -24,7 +24,7 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
     if len(extracted_text.strip()) > 50:
         return extracted_text.strip()
         
-    #2 >> Fallback: OCR Extraction for Scanned PDFs
+    #Step 2 >> Fallback : OCR Extraction for scanned PDF
     extracted_text = ""
     for page_num in range(len(pdf_document)):
         page = pdf_document.load_page(page_num)
@@ -33,7 +33,7 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
         pix = page.get_pixmap(matrix=fitz.Matrix(2, 2)) # 2x zoom for better OCR
         img = Image.open(io.BytesIO(pix.tobytes("png")))
         
-        # Run Tesseract
+        # tesseract run
         text = pytesseract.image_to_string(img)
         extracted_text += text + "\n"
         

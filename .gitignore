@@ -19,3 +19,46 @@ __pycache__/
 # OS Generated Files
 .DS_Store
 Thumbs.db
+
+# Angular Frontend
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+angular-frontend/dist
+angular-frontend/tmp
+angular-frontend/out-tsc
+angular-frontend/bazel-out
+
+# Node
+angular-frontend/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
+
+# Miscellaneous
+angular-frontend/.angular/cache
+.sass-cache/
+angular-frontend/connect.lock
+angular-frontend/coverage
+angular-frontend/libpeerconnection.log
+testem.log
+angular-frontend/typings
+__screenshots__/
+
