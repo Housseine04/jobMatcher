@@ -2,7 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 from groq import Groq, RateLimitError, APIError
-from app.schema import ResumeAnalysis
+from backend.schema import ResumeAnalysis
 
 load_dotenv()
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
