@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y \
     libtesseract-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./requirements.txt /code/requirements.txt
+COPY ./backend/requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY ./app /code/app
+COPY ./backend /code/backend
 
 EXPOSE 8000
 
