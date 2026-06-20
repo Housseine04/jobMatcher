@@ -1,0 +1,173 @@
+<div class="min-h-screen bg-gray-50 p-8 text-gray-800 font-sans">
+  <div class="max-w-7xl mx-auto">
+
+    @if (uiState() === 'INPUT') {
+    <header class="mb-10 text-center">
+      <h1 class="text-4xl font-extrabold text-blue-900 tracking-tight">Job Matcher</h1>
+      <p class="text-gray-500 mt-2">Upload your CV and check how well you align with the job.</p>
+    </header>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+
+      <div class="flex flex-col h-full space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 flex flex-col">
+          <h2 class="text-xl font-bold mb-4 text-gray-700">Your Profile</h2>
+
+          @if (!selectedFile()) {
+          <label
+            class="flex-1 flex flex-col items-center justify-center min-h-[300px] border-2 border-dashed border-blue-300 rounded-xl cursor-pointer bg-blue-50 hover:bg-blue-100 transition">
+            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+              <svg class="w-10 h-10 mb-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+              </svg>
+              <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop
+              </p>
+              <p class="text-xs text-gray-500">PDF Resumes Only</p>
+            </div>
+            <input type="file" class="hidden" accept=".pdf" (change)="onFileSelected($event)" />
+          </label>
+          } @else {
+          <div class="flex-1 min-h-[300px] border border-gray-200 rounded-xl overflow-hidden mb-4">
+            <object [data]="pdfUrl()" type="application/pdf" width="100%" height="100%">
+              <p class="p-4 text-center text-gray-500">Your browser does not support embedded PDFs. <br> File attached:
+                {{ selectedFile()?.name }}</p>
+            </object>
+          </div>
+          }
+
+          <div class="mt-4 shrink-0">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Additional Info (Optional)</label>
+            <textarea [(ngModel)]="additionalInfo" rows="3"
+              class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Add any context not in your CV..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col h-full space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 flex flex-col">
+          <h2 class="text-xl font-bold mb-4 text-gray-700">The Opportunity</h2>
+
+          <div class="flex-1 flex flex-col mb-5">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Job Description</label>
+            <textarea [(ngModel)]="jobDescription"
+              class="flex-1 w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+              placeholder="Paste the general role description here..."></textarea>
+          </div>
+
+          <div class="flex-1 flex flex-col">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Specific Requirements</label>
+            <textarea [(ngModel)]="jobRequirements"
+              class="flex-1 w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+              placeholder="Paste the bulleted list of required skills..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 flex justify-center">
+      <button (click)="analyze()"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full shadow-lg transition-transform hover:scale-105 text-lg disabled:opacity-50">
+        Analyze Match
+      </button>
+    </div>
+    }
+
+    @else if (uiState() === 'LOADING') {
+    <div class="flex flex-col items-center justify-center min-h-[60vh]">
+
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-700 animate-pulse">Please wait...</h2>
+        <p class="text-gray-500 mt-2">We are matching your data with the job information.</p>
+      </div>
+
+      <div class="relative flex justify-center items-center h-24 w-24 mb-12">
+        <div class="absolute animate-ping inline-flex h-full w-full rounded-full bg-blue-200 opacity-75"></div>
+        <div class="relative inline-flex rounded-full h-16 w-16 bg-blue-600 items-center justify-center">
+          <svg class="animate-spin h-8 w-8 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-8 w-full max-w-5xl opacity-50">
+        <div class="h-64 bg-gray-200 rounded-2xl animate-pulse"></div>
+        <div class="h-64 bg-gray-200 rounded-2xl animate-pulse"></div>
+      </div>
+
+    </div>
+    }
+
+    @else if (uiState() === 'RESULTS' && analysisResult()) {
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+
+      <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
+        <div class="flex justify-between items-center mb-6 shrink-0">
+          <h2 class="text-2xl font-bold text-gray-700">Adapted Cover Letter</h2>
+          @if (analysisResult()!.matching_score < 60) { <span
+            class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">Low Match Detected</span>
+            }
+        </div>
+
+        <div
+          class="bg-gray-50 p-6 rounded-xl flex-1 h-0 border border-gray-200 whitespace-pre-wrap text-sm text-gray-700 overflow-y-auto">
+          {{ analysisResult()?.cover_letter }}
+        </div>
+      </div>
+
+      <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
+        <h2 class="text-2xl font-bold text-gray-700 mb-8 shrink-0">Match Analysis</h2>
+
+        <div class="flex-1">
+          <div class="flex items-center space-x-6 mb-8">
+            <div class="relative w-28 h-28 flex items-center justify-center rounded-full border-8"
+              [ngClass]="{'border-green-400': analysisResult()!.matching_score >= 60, 'border-red-400': analysisResult()!.matching_score < 60}">
+              <span class="text-3xl font-extrabold text-gray-800">{{ analysisResult()?.matching_score }}%</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-gray-800">Overall Fit</h3>
+              <p class="text-gray-500 text-sm">Based on your CV and additional context.</p>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Strong Matches</h4>
+            <div class="flex flex-wrap gap-2">
+              @for (skill of analysisResult()?.matched_skills; track skill) {
+              <span
+                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium border border-green-200">{{
+                skill }}</span>
+              }
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Missing Requirements</h4>
+            <div class="flex flex-wrap gap-2">
+              @for (skill of analysisResult()?.lacking_skills; track skill) {
+              <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-sm font-medium border border-red-200">{{
+                skill }}</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10 pt-6 border-t border-gray-100 shrink-0">
+          <button (click)="reset()"
+            class="text-blue-600 font-semibold hover:text-blue-800 flex items-center transition">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+              </path>
+            </svg>
+            Analyze Another Job
+          </button>
+        </div>
+      </div>
+    </div>
+    }
+
+  </div>
+</div>
