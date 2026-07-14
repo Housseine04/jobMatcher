@@ -55,7 +55,7 @@ def analyze_resume_and_draft_letter(
 
     try:
         response = client.chat.completions.create(
-            model="qwen/qwen3.6-27b",
+            model="openai/gpt-oss-120b",
             messages=messages_payload,
             response_format={"type": "json_object"},
             temperature=0.2,
