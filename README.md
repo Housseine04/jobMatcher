@@ -6,7 +6,6 @@ JobMatcher is a full-stack recruitment application designed to analyze a candida
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?style=for-the-badge&logo=tailwindcss)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python)
-![Groq](https://img.shields.io/badge/AI-Groq_Llama_4-f3f4f6?style=for-the-badge)
 
 ## Features
 
