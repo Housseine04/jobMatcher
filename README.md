@@ -12,7 +12,7 @@ JobMatcher is a full-stack recruitment application designed to analyze a candida
 
 * **Intelligent PDF Extraction:** Securely parses uploaded PDF resumes for text extraction and embeds a native viewer in the UI.
 * **Context-Aware Analysis:** Evaluates candidates based on their CV, the general job description, specific technical requirements, and any additional user-provided context.
-* **Quantitative Scoring:** Generates a 0-100% matching score using Meta's `llama-4-scout-17b` model via the ultra-fast Groq API.
+* **Quantitative Scoring:** Generates a 0-100% matching score using OpenAI's `gpt-oss-120b` model via the ultra-fast Groq API.
 * **Skill Gap Identification:** Automatically categorizes "Strong Matches" and "Missing Requirements" for quick visual assessment.
 * **Automated Cover Letters:** Drafts a professional, context-rich cover letter designed to bridge the gap between the user's experience and the employer's needs.
 * **Graceful Degradation:** Built-in rate limit handling (HTTP 429) ensuring the frontend UI remains stable during high API traffic.
