@@ -67,7 +67,7 @@ export class AppComponent {
       const objectUrl = URL.createObjectURL(file);
       this.pdfUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl));
     } else {
-      alert(this.selectedLanguage() === 'fr' ? 'Veuillez téléverser un fichier PDF valide.' : 'Please upload a valid PDF file.');
+      alert(this.selectedLanguage() === 'fr' ? 'Veuillez importer un fichier PDF valide.' : 'Please upload a valid PDF file.');
     }
   }
 

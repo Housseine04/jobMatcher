@@ -36,7 +36,7 @@ export interface AnalysisResponse {
 export class ResumeService {
     private http = inject(HttpClient);
 
-    private apiUrl = 'http://localhost:8000/api/analyze'; //https://jobmatcher-production-942d.up.railway.app/api/analyze'; // << Future Python backend URL goes here
+    private apiUrl = 'https://jobmatcher-production-942d.up.railway.app/api/analyze'; // << Future Python backend URL goes here
 
     analyzeResume(
         file: File,
