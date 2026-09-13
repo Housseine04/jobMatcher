@@ -19,10 +19,11 @@ app.add_middleware(
 
 @app.post("/api/analyze")
 async def analyze_application(
-file: UploadFile = File(...),
+    file: UploadFile = File(...),
     job_description: str = Form(...),
     job_requirements: str = Form(...),           # <-- New required field
-    additional_info: str = Form("")              # <-- New optional field
+    additional_info: str = Form(""),             # <-- New optional field
+    language: str = Form("en")                   # <-- Language choice: 'en' or 'fr'
 ):
     try:
         # Read the file bytes asynchronously
@@ -31,12 +32,13 @@ file: UploadFile = File(...),
         # Extract text from the uploaded PDF
         resume_text = extract_text_from_pdf(file_bytes)
         
-        # Pass all four variables to your AI service
+        # Pass variables including language to your AI service
         analysis_result = analyze_resume_and_draft_letter(
             resume_text=resume_text,
             job_description=job_description,
             job_requirements=job_requirements,   # <-- Passing to AI
-            additional_info=additional_info      # <-- Passing to AI
+            additional_info=additional_info,     # <-- Passing to AI
+            language=language                    # <-- Language for cover letter
         )
         
         return {"status": "success", "data": analysis_result}
